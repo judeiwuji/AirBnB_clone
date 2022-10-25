@@ -26,7 +26,7 @@ class FileStorage:
 			obj(Object): The object to be added to `__objects`
 		"""
 
-		if obj is None or obj.id is None:
+		if not isinstance(obj, self.get_class("BaseModel")):
 			return
 
 		key = "{}.{}".format(obj.__class__.__name__, obj.id)
