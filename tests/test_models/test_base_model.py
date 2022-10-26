@@ -48,6 +48,5 @@ class TestBaseModel(unittest.TestCase):
         pass
 
 
-
 if __name__ == "__main__":
-    unittest.main(TestFileStorage)
+    unittest.main(TestBaseModel)

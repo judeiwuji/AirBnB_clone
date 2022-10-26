@@ -9,6 +9,7 @@ import models
 from datetime import datetime
 from models import storage
 
+
 class BaseModel:
     """
     base class for other classes
@@ -25,7 +26,8 @@ class BaseModel:
             for i in kwargs:
                 value = kwargs[i]
                 if i == "created_at" or i == "updated_at":
-                    value = datetime.strptime(kwargs[i], '%Y-%m-%dT%H:%M:%S.%f')
+                    date_format = '%Y-%m-%dT%H:%M:%S.%f'
+                    value = datetime.strptime(kwargs[i], date_format)
                 if i != "__class__":
                     setattr(self, i, value)
         else:
