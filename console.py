@@ -94,6 +94,26 @@ class HBNBCommand(cmd.Cmd):
             setattr(obj, attribute, value)
         obj.save()
 
+    def do_all(self, arg=""):
+        """Prints all string representation of all
+        instances based or not on the class name
+        """
+        if arg == "":
+            objs = storage.all()
+            list_o = []
+            for key in objs:
+                list_o.append(str(objs[key]))
+            print(list_o)
+        else:
+            if not CommandValidator.canDoCreate(arg):
+                return False
+            objs = storage.all()
+            list_o = []
+            for key in objs:
+                if arg in key:
+                    list_o.append(str(objs[key]))
+            print(list_o)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
