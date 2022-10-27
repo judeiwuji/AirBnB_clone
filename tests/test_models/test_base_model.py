@@ -45,7 +45,10 @@ class TestBaseModel(unittest.TestCase):
 
     def test_str(self):
         """test the __str__ majic method"""
-        pass
+
+        b = BaseModel()
+        b_str = "[BaseModel] ({}) {}".format(b.id, b.__dict__)
+        self.assertEqual(b_str, str(b))
 
 
 if __name__ == "__main__":

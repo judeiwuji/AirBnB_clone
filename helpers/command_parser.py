@@ -42,13 +42,18 @@ class CommandParser:
         if len(raw_arg) > 0:
             temp = raw_arg[0].replace("(", "").replace(")", "")
             raw_arg = temp.split(",")
-            o_id = raw_arg[0].replace('"', "")
-            raw_arg = raw_arg[1:]
-            for i in range(0, len(raw_arg)):
-                data = raw_arg[i].strip()
-                if i == 0 and not data.startswith("{"):
-                    data = data.replace('"', "")
-                raw_arg[i] = data
-            parsed = "{} {}".format(o_id, ' '.join(raw_arg))
+            o_id = raw_arg[0]
+            raw_arg = temp[len(o_id):]
+            o_id = o_id.replace('"', "")
+
+            if raw_arg.startswith(","):
+                raw_arg = (raw_arg[1:]).strip()
+            if not raw_arg.startswith("{"):
+                raw_arg = raw_arg.split(",")
+                for i in range(0, len(raw_arg)):
+                    data = raw_arg[i].strip()
+                    raw_arg[i] = data.replace('"', "")
+                raw_arg = ' '.join(raw_arg)
+            parsed = "{} {}".format(o_id, raw_arg)
 
         return "{} {} {}".format(cmd, model, parsed).strip()
