@@ -26,9 +26,10 @@ class FileStorage:
         Args:
             obj(Object): The object to be added to `__objects`
         """
-        ClassName = obj.__class__.__name__
+        className = obj.__class__.__name__
+        model = self.get_class(className)
 
-        if not isinstance(obj, self.get_class(ClassName)):
+        if model is None:
             return
 
         key = "{}.{}".format(obj.__class__.__name__, obj.id)

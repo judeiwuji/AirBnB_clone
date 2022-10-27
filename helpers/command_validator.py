@@ -9,13 +9,16 @@ class CommandValidator:
     """Provides validation Rules."""
 
     @staticmethod
-    def canDoCreate(arg):
+    def canUseModel(arg):
         """Returns True if the command can be processed,
         Otherwise, returns False
 
         Args:
             arg(str): The argument to be validated
         """
+
+        if type(arg) is not str:
+            return False
 
         if arg == "":
             print("** class name missing **")
@@ -36,6 +39,9 @@ class CommandValidator:
         Args:
             arg(str): The argument to be validated
         """
+
+        if type(arg) is not str:
+            return False
 
         if arg == "":
             print("** class name missing **")

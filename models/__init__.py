@@ -10,6 +10,7 @@ from models.engine.file_storage import FileStorage
 storage = FileStorage()
 storage.reload()
 
+
 def get_model(name):
     """Returns model with the given name"""
 

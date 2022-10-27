@@ -4,7 +4,9 @@ with the Application.
 """
 
 import cmd
-
+import re
+import json
+from helpers.command_parser import CommandParser
 from models import get_model, storage
 from helpers.command_validator import CommandValidator
 
@@ -32,6 +34,7 @@ class HBNBCommand(cmd.Cmd):
         """End of File command to exit the program
         """
 
+        print()
         return True
 
     def do_create(self, arg):
@@ -39,7 +42,7 @@ class HBNBCommand(cmd.Cmd):
         file and print the id
         """
 
-        if not CommandValidator.canDoCreate(arg):
+        if not CommandValidator.canUseModel(arg):
             return False
         model = get_model(arg)
         obj = model()
@@ -82,16 +85,30 @@ class HBNBCommand(cmd.Cmd):
         args = arg.strip().split(" ")
         key = "{}.{}".format(args[0], args[1])
         obj = storage.all().get(key, None)
-        attribute = args[2]
-        value = args[3]
-        quoted_value = arg.split('"')
-        if len(quoted_value) > 1:
-            value = quoted_value[1]
-        try:
-            attribute_type = type(getattr(obj, attribute))
-            setattr(obj, attribute, attribute_type(value))
-        except AttributeError:
-            setattr(obj, attribute, value)
+        raw_dict_list = re.findall(r"\{.+?\}", arg)
+        to_update = {}
+        if len(raw_dict_list) > 0:
+            try:
+                to_update = json.loads(raw_dict_list[0])
+            except Exception:
+                pass
+        else:
+            key = args[2].replace('"', '')
+            value = ' '.join(args[3:])
+            quoted_value = value.split('"')
+            if len(quoted_value) > 1:
+                value = quoted_value[1].strip()
+            to_update[key] = int(value) if value.isnumeric() else value
+
+        for key in to_update:
+            value = to_update[key]
+            try:
+                attribute_type = type(getattr(obj, key))
+                setattr(obj, key, attribute_type(value))
+            except AttributeError:
+                setattr(obj, key, value)
+            except ValueError:
+                pass
         obj.save()
 
     def do_all(self, arg=""):
@@ -105,13 +122,29 @@ class HBNBCommand(cmd.Cmd):
             for key in objs:
                 list_o.append(str(objs[key]))
         else:
-            if not CommandValidator.canDoCreate(arg):
+            if not CommandValidator.canUseModel(arg):
                 return False
             objs = storage.all()
             for key in objs:
                 if arg in key:
                     list_o.append(str(objs[key]))
         print(list_o)
+
+    def do_count(self, arg=""):
+        """retrieve the number of instances of a class: <class name>.count()"""
+
+        if not CommandValidator.canUseModel(arg):
+            return False
+        count = 0
+        for key in storage.all():
+            if key.startswith(arg):
+                count += 1
+        print(count)
+
+    def precmd(self, line=""):
+        """Hook to process command before is executed"""
+
+        return CommandParser.parse(line)
 
 
 if __name__ == '__main__':
