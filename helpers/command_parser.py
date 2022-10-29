@@ -36,7 +36,7 @@ class CommandParser:
 
         model = re.findall(r"^(\w+)", arg)[0]
         cmd = re.findall(r"\.(\w+)", arg)[0]
-        raw_arg = re.findall(r'(\([",0-9A-Za-z\-_{}: ]+\))', arg)
+        raw_arg = re.findall(r"""(\(["\',0-9A-Za-z\-_{}: ]+\))""", arg)
         parsed = ""
 
         if len(raw_arg) > 0:
