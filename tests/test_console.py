@@ -6,12 +6,17 @@ import unittest
 from io import StringIO
 from unittest.mock import patch
 from console import HBNBCommand
+from models import storage
+from models.user import User
 
 
 class TestHBNBCommand(unittest.TestCase):
     """defines test cases for HBNBCommand"""
 
-    def test_count(self):
+    def setUp(self):
+        """Initializes test data"""
+
+    def test_do_count(self):
         """It should return instance count of User
         """
 
@@ -19,16 +24,37 @@ class TestHBNBCommand(unittest.TestCase):
             HBNBCommand().onecmd("count User")
             self.assertGreaterEqual(int(f.getvalue()), 0)
 
-    def test_create_cmd(self):
-        """It should create a User
+    def test_do_count_user(self):
+        """It should return instance count of User
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.count()")
+            self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do_create(self):
+        """It should create a User using `create User` cmd
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
             obj_id = f.getvalue().strip()
-            self.assertEqual(len(obj_id), 36)
+            key = "User.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, User)
 
-    def test_create_cmd_missing_class(self):
+    def test_do_create_user(self):
+        """It should create a User using User.create() cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.create()")
+            obj_id = f.getvalue().strip()
+            key = "User.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, User)
+
+    def test_do_create_without_class(self):
         """It should fail to create
         """
 
@@ -37,7 +63,7 @@ class TestHBNBCommand(unittest.TestCase):
             msg = f.getvalue().strip()
             self.assertEqual(msg, "** class name missing **")
 
-    def test_create_cmd_class_not_exists(self):
+    def test_do_create_class_not_exists(self):
         """It should fail to create MyModel
         """
 
@@ -46,8 +72,8 @@ class TestHBNBCommand(unittest.TestCase):
             msg = f.getvalue().strip()
             self.assertEqual(msg, "** class doesn't exist **")
 
-    def test_all_cmd(self):
-        """It should display all instances
+    def test_do_all(self):
+        """It should display all instances using all cmd
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
@@ -56,8 +82,9 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
             self.assertGreater(len(output), 0)
 
-    def test_all_users_cmd(self):
-        """It should display all User instances
+    def test_do_all_users(self):
+        """It should display only User instances using User.all()
+        cmd
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
@@ -69,8 +96,15 @@ class TestHBNBCommand(unittest.TestCase):
             match = re.search(r"Place", output)
             self.assertIsNone(match)
 
-    def test_show_cmd(self):
-        """It should display a User with given id
+            HBNBCommand().onecmd("User.all()")
+            output = f.getvalue().strip()
+            self.assertGreater(len(output), 0)
+            match = re.search(r"Place", output)
+            self.assertIsNone(match)
+
+    def test_do_show(self):
+        """It should display a User with given id using
+        show User id cmd
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
@@ -81,7 +115,20 @@ class TestHBNBCommand(unittest.TestCase):
             match = re.search(r"User", output)
             self.assertIsNotNone(match)
 
-    def test_show_cmd_missing_class(self):
+    def test_do_show_user(self):
+        """It should display a User with given id using
+        User.show(id) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("User.show({})".format(obj_id))
+            output = f.getvalue().strip()
+            match = re.search(r"User", output)
+            self.assertIsNotNone(match)
+
+    def test_do_show_missing_class(self):
         """It should fail to show
         """
 
@@ -90,8 +137,8 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
             self.assertEqual(output, "** class name missing **")
 
-    def test_show_cmd_class_not_exists(self):
-        """It should fail to show
+    def test_do_show_class_not_exists(self):
+        """It should fail to show MyModel
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
@@ -99,19 +146,91 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
             self.assertEqual(output, "** class doesn't exist **")
 
-    def test_update_cmd(self):
-        """It should update User first_name
+    def test_do_show_missing_id(self):
+        """It should fail to show User with missing id
+        using show User cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show User")
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** instance id missing **")
+
+    def test_do_show_user_missing_id(self):
+        """It should fail to show User with missing id
+        using User.show() cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.show()")
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** instance id missing **")
+
+    def test_do_update(self):
+        """It should update User first_name using
+        update User id "first_name" "Betty" cmd
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
             obj_id = f.getvalue().strip()
+            key = "User.{}".format(obj_id)
+            before_update = str(storage.all().get(key))
             cmd = 'update User {} "first_name" "Betty"'
             HBNBCommand().onecmd(cmd.format(obj_id))
-            HBNBCommand().onecmd("show User {}".format(obj_id))
-            output = f.getvalue().strip()
-            match = re.search(r"first_name", output)
-            self.assertIsNotNone(match)
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_user(self):
+        """It should update User first_name using
+        User.update("id", "first_name", "Betty") cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            obj_id = f.getvalue().strip()
+            key = "User.{}".format(obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'User.update({}, "first_name", "Betty")'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_user_dict(self):
+        """It should update User first_name using
+        User.update("id", {"first_name": "Betty"}) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            obj_id = f.getvalue().strip()
+            key = "User.{}".format(obj_id)
+            before_update = str(storage.all().get(key))
+            data = '{"first_name": "Betty"}'
+            cmd = 'User.update("{}", {})'
+            HBNBCommand().onecmd(cmd.format(obj_id, data))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_missing_class(self):
+        """It should fail to update using cmd
+        update
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("update")
+            self.assertEqual(f.getvalue().strip(), "** class name missing **")
+
+    def test_do_update_class_not_exists(self):
+        """It should fail to update using cmd
+        update MyModel
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("update MyModel")
+            self.assertEqual(f.getvalue().strip(), "** class doesn't exist **")
 
 
 if __name__ == "__main__":

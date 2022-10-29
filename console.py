@@ -7,8 +7,9 @@ import cmd
 import re
 import json
 from helpers.command_parser import CommandParser
-from models import get_model, storage
+from models import storage
 from helpers.command_validator import CommandValidator
+from helpers.class_loader import ClassLoader
 
 
 class HBNBCommand(cmd.Cmd):
@@ -38,13 +39,13 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, arg):
-        """Creates a new instance of BaseModel, saves it to json
+        """Creates a new instance of given class, saves it to json
         file and print the id
         """
 
         if not CommandValidator.canUseModel(arg):
             return False
-        model = get_model(arg)
+        model = ClassLoader.load(arg)
         obj = model()
         obj.save()
         print("{}".format(obj.id))
@@ -145,6 +146,11 @@ class HBNBCommand(cmd.Cmd):
         """Hook to process command before is executed"""
 
         return CommandParser.parse(line)
+
+    def onecmd(self, line=""):
+        """Overrides CMD onecmd"""
+
+        return cmd.Cmd.onecmd(self, CommandParser.parse(line))
 
 
 if __name__ == '__main__':

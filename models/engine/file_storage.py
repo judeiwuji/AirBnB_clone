@@ -3,8 +3,7 @@
 
 import os
 import json
-from importlib import import_module
-from pathlib import Path
+from helpers.class_loader import ClassLoader
 
 
 class FileStorage:
@@ -27,7 +26,7 @@ class FileStorage:
             obj(Object): The object to be added to `__objects`
         """
         className = obj.__class__.__name__
-        model = self.get_class(className)
+        model = ClassLoader.load(className)
 
         if model is None:
             return
@@ -48,19 +47,6 @@ class FileStorage:
         with open(self.__file_path, mode="w", encoding="utf-8") as fp:
             fp.write(raw)
 
-    def get_class(self, name):
-        """Returns class of a given name"""
-
-        models_path = os.path.dirname(os.path.realpath(__file__))
-        for filename in os.listdir(Path(models_path).parent.absolute()):
-            if (not filename.startswith("__")):
-                module_name = filename.split(".")[0]
-                module = import_module("models.{}".format(module_name))
-                try:
-                    return getattr(module, name)
-                except AttributeError as ex:
-                    pass
-
     def reload(self):
         """deserializes the JSON file to `__objects`"""
 
@@ -75,6 +61,6 @@ class FileStorage:
                 attributes = raw[key]
                 className = attributes['__class__']
                 del attributes['__class__']
-                obj_class = self.get_class(className)
+                obj_class = ClassLoader.load(className)
                 obj = obj_class(**attributes)
                 self.__objects[key] = obj

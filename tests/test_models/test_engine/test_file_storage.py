@@ -73,12 +73,6 @@ class TestFileStorage(unittest.TestCase):
         objects = self.storage.all()
         self.assertIsInstance(objects, dict)
 
-    def test_get_class(self):
-        """It should return the definition of a given class."""
-
-        obj_class = self.storage.get_class("BaseModel")
-        self.assertIs(BaseModel, obj_class)
-
 
 if __name__ == "__main__":
     unittest.main(TestFileStorage)

@@ -50,9 +50,12 @@ class CommandParser:
                 raw_arg = (raw_arg[1:]).strip()
             if not raw_arg.startswith("{"):
                 raw_arg = raw_arg.split(",")
-                for i in range(0, len(raw_arg)):
+                arg_len = len(raw_arg)
+                for i in range(0, arg_len):
                     data = raw_arg[i].strip()
-                    raw_arg[i] = data.replace('"', "")
+                    if i != arg_len - 1:
+                        data = data.replace('"', "")
+                    raw_arg[i] = data
                 raw_arg = ' '.join(raw_arg)
             parsed = "{} {}".format(o_id, raw_arg)
 

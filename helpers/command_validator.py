@@ -2,7 +2,8 @@
 """This module defines validation Rules."""
 
 
-from models import get_model, storage
+from models import storage
+from helpers.class_loader import ClassLoader
 
 
 class CommandValidator:
@@ -24,7 +25,7 @@ class CommandValidator:
             print("** class name missing **")
             return False
 
-        model = get_model(arg)
+        model = ClassLoader.load(arg)
         if model is None:
             print("** class doesn't exist **")
             return False
@@ -48,7 +49,7 @@ class CommandValidator:
             return False
 
         args = arg.strip().split(" ")
-        model = get_model(args[0])
+        model = ClassLoader.load(args[0])
         if model is None:
             print("** class doesn't exist **")
             return False
