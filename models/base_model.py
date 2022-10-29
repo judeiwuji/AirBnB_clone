@@ -5,7 +5,6 @@ module base_model: contains class BaseModel
 
 
 import uuid
-import models
 from datetime import datetime
 from models import storage
 
