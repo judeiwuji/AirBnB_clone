@@ -489,7 +489,7 @@ class TestHBNBCommand(unittest.TestCase):
             match = re.search(r"User", output)
             self.assertIsNone(match)
 
-    def test_do_all_amenities(self):
+    def test_do_all__amenities(self):
         """It should display only Amenity instances using
         cmd Amenity.all()
         """
@@ -504,7 +504,7 @@ class TestHBNBCommand(unittest.TestCase):
             match = re.search(r"User", output)
             self.assertIsNone(match)
 
-    def test_do_all_reviews(self):
+    def test_do_all__reviews(self):
         """It should display only Review instances using
         cmd Review.all()
         """
@@ -519,7 +519,7 @@ class TestHBNBCommand(unittest.TestCase):
             match = re.search(r"User", output)
             self.assertIsNone(match)
 
-    def test_do_all_states(self):
+    def test_do_all__states(self):
         """It should display only State instances using
         cmd State.all()
         """
@@ -534,7 +534,7 @@ class TestHBNBCommand(unittest.TestCase):
             match = re.search(r"User", output)
             self.assertIsNone(match)
 
-    def test_do_all_cities(self):
+    def test_do_all__cities(self):
         """It should display only City instances using
         cmd City.all()
         """
@@ -570,6 +570,20 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(output, "** class doesn't exist **")
 
     def test_do_show(self):
+        """It should display a BaseModel with given id using
+        show BaseModel id cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("show BaseModel {}".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "BaseModel.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
+
+    def test_do_show_user(self):
         """It should display a User with given id using
         show User id cmd
         """
@@ -578,11 +592,96 @@ class TestHBNBCommand(unittest.TestCase):
             HBNBCommand().onecmd("create User")
             obj_id = f.getvalue().strip()
             HBNBCommand().onecmd("show User {}".format(obj_id))
-            output = f.getvalue().strip()
-            match = re.search(r"User", output)
-            self.assertIsNotNone(match)
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "User.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
 
-    def test_do_show_user(self):
+    def test_do_show_place(self):
+        """It should display a Place with given id using
+        show Place id cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Place")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("show Place {}".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "Place.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
+
+    def test_do_show_review(self):
+        """It should display a Review with given id using
+        show Review id cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Review")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("show Review {}".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "Review.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
+
+    def test_do_show_amenity(self):
+        """It should display a Amenity with given id using
+        show Amenity id cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Amenity")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("show Amenity {}".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "Amenity.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
+
+    def test_do_show_city(self):
+        """It should display a City with given id using
+        show City id cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create City")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("show City {}".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "City.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
+
+    def test_do_show_state(self):
+        """It should display a State with given id using
+        show State id cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("show State {}".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "State.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
+
+    def test_do__show(self):
+        """It should display a BaseModel with given id using
+        BaseModel.show(id) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("BaseModel.show({})".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "BaseModel.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
+
+    def test_do_show__user(self):
         """It should display a User with given id using
         User.show(id) cmd
         """
@@ -590,10 +689,81 @@ class TestHBNBCommand(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
             obj_id = f.getvalue().strip()
-            HBNBCommand().onecmd("User.show({})".format(obj_id))
-            output = f.getvalue().strip()
-            match = re.search(r"User", output)
-            self.assertIsNotNone(match)
+            HBNBCommand().onecmd("show User {}".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "User.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
+
+    def test_do_show__place(self):
+        """It should display a Place with given id using
+        Place.show(id) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Place")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("Place.show({})".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "Place.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
+
+    def test_do_show__review(self):
+        """It should display a Review with given id using
+        Review.show(id) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Review")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("Review.show({})".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "Review.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
+
+    def test_do_show__amenity(self):
+        """It should display a Amenity with given id using
+        Amenity.show(id) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Amenity")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("Amenity.show({})".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "Amenity.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
+
+    def test_do_show__city(self):
+        """It should display a City with given id using
+        City.show(id) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create City")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("City.show({})".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "City.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
+
+    def test_do_show__state(self):
+        """It should display a State with given id using
+        State.show(id) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State")
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("State.show({})".format(obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            key = "State.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertEqual(len(str(obj)), len(output))
 
     def test_do_show_missing_class(self):
         """It should fail to show
