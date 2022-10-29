@@ -54,7 +54,7 @@ class TestHBNBCommand(unittest.TestCase):
             obj = storage.all().get(key)
             self.assertIsInstance(obj, User)
 
-    def test_do_create_without_class(self):
+    def test_do_create_missing_class(self):
         """It should fail to create
         """
 
@@ -72,6 +72,27 @@ class TestHBNBCommand(unittest.TestCase):
             msg = f.getvalue().strip()
             self.assertEqual(msg, "** class doesn't exist **")
 
+    def test_do_create_user(self):
+        """It should create a User using User.create() cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.create()")
+            obj_id = f.getvalue().strip()
+            key = "User.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, User)
+
+    def test_do_create_model_not_exists(self):
+        """It should fail to create MyModel
+        MyModel.create()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("MyModel.create()")
+            msg = f.getvalue().strip()
+            self.assertEqual(msg, "** class doesn't exist **")
+
     def test_do_all(self):
         """It should display all instances using all cmd
         """
@@ -83,8 +104,8 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertGreater(len(output), 0)
 
     def test_do_all_users(self):
-        """It should display only User instances using User.all()
-        cmd
+        """It should display only User instances using
+        cmd all User
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
@@ -101,6 +122,32 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertGreater(len(output), 0)
             match = re.search(r"Place", output)
             self.assertIsNone(match)
+
+    def test_do_all__users(self):
+        """It should display only User instances using
+        cmd User.all()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            HBNBCommand().onecmd("create Place")
+            HBNBCommand().onecmd("all User")
+
+            HBNBCommand().onecmd("User.all()")
+            output = f.getvalue().strip()
+            self.assertGreater(len(output), 0)
+            match = re.search(r"Place", output)
+            self.assertIsNone(match)
+
+    def test_do_all_class_not_exists(self):
+        """It should fail to display MyModel
+        instances
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("MyModel.all()")
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** class doesn't exist **")
 
     def test_do_show(self):
         """It should display a User with given id using
