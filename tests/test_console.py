@@ -7,6 +7,12 @@ from io import StringIO
 from unittest.mock import patch
 from console import HBNBCommand
 from models import storage
+from models.amenity import Amenity
+from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
 from models.user import User
 
 
@@ -14,11 +20,11 @@ class TestHBNBCommand(unittest.TestCase):
     """defines test cases for HBNBCommand"""
 
     def test_do_count(self):
-        """It should return instance count of User
+        """It should return instance count of BaseModel
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("count User")
+            HBNBCommand().onecmd("count BaseModel")
             self.assertGreaterEqual(int(f.getvalue()), 0)
 
     def test_do_count_user(self):
@@ -26,7 +32,95 @@ class TestHBNBCommand(unittest.TestCase):
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count User")
+            self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do_count_place(self):
+        """It should return instance count of Place
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Place")
+            self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do_count_amenity(self):
+        """It should return instance count of Amenity
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Amenity")
+            self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do_count_city(self):
+        """It should return instance count of City
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count City")
+            self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do_count_review(self):
+        """It should return instance count of Review
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count Review")
+            self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do_count_state(self):
+        """It should return instance count of State
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count State")
+            self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do__count_user(self):
+        """It should return instance count of User
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("User.count()")
+            self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do_count__place(self):
+        """It should return instance count of Place
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Place.count()")
+            self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do_count__amenity(self):
+        """It should return instance count of Amenity
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Amenity.count()")
+            self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do_count__city(self):
+        """It should return instance count of City
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("City.count()")
+            self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do_count__review(self):
+        """It should return instance count of Review
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Review.count()")
+            self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do_count__state(self):
+        """It should return instance count of State
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("State.count()")
             self.assertGreaterEqual(int(f.getvalue()), 0)
 
     def test_do_count_missing_class(self):
@@ -57,7 +151,18 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(output, "** class doesn't exist **")
 
     def test_do_create(self):
-        """It should create a User using `create User` cmd
+        """It should create a BaseModel using `create BaseModel` cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+            obj_id = f.getvalue().strip()
+            key = "BaseModel.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, BaseModel)
+
+    def test_do_create_user(self):
+        """It should create a User using User.create() cmd
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
@@ -67,7 +172,73 @@ class TestHBNBCommand(unittest.TestCase):
             obj = storage.all().get(key)
             self.assertIsInstance(obj, User)
 
-    def test_do_create_user(self):
+    def test_do__create(self):
+        """It should create a BaseModel using `BaseModel.create()` cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.create()")
+            obj_id = f.getvalue().strip()
+            key = "BaseModel.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, BaseModel)
+
+    def test_do_create_place(self):
+        """It should create a Place using create Place cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Place")
+            obj_id = f.getvalue().strip()
+            key = "Place.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, Place)
+
+    def test_do_create_amenity(self):
+        """It should create a Amenity using create Amenity cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Amenity")
+            obj_id = f.getvalue().strip()
+            key = "Amenity.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, Amenity)
+
+    def test_do_create_city(self):
+        """It should create a City using create City cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create City")
+            obj_id = f.getvalue().strip()
+            key = "City.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, City)
+
+    def test_do_create_review(self):
+        """It should create a Review using create Review cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create Review")
+            obj_id = f.getvalue().strip()
+            key = "Review.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, Review)
+
+    def test_do_create_state(self):
+        """It should create a State using create State cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State")
+            obj_id = f.getvalue().strip()
+            key = "State.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, State)
+
+    def test_do_create__user(self):
         """It should create a User using User.create() cmd
         """
 
@@ -77,6 +248,61 @@ class TestHBNBCommand(unittest.TestCase):
             key = "User.{}".format(obj_id)
             obj = storage.all().get(key)
             self.assertIsInstance(obj, User)
+
+    def test_do_create__place(self):
+        """It should create a Place using Place.create() cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Place.create()")
+            obj_id = f.getvalue().strip()
+            key = "Place.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, Place)
+
+    def test_do_create__amenity(self):
+        """It should create a Amenity using Amenity.create() cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Amenity.create()")
+            obj_id = f.getvalue().strip()
+            key = "Amenity.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, Amenity)
+
+    def test_do_create__city(self):
+        """It should create a City using City.create() cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("City.create()")
+            obj_id = f.getvalue().strip()
+            key = "City.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, City)
+
+    def test_do_create__review(self):
+        """It should create a Review using Review.create() cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Review.create()")
+            obj_id = f.getvalue().strip()
+            key = "Review.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, Review)
+
+    def test_do_create__state(self):
+        """It should create a State using State.create() cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("State.create()")
+            obj_id = f.getvalue().strip()
+            key = "State.{}".format(obj_id)
+            obj = storage.all().get(key)
+            self.assertIsInstance(obj, State)
 
     def test_do_create_missing_class(self):
         """It should fail to create
