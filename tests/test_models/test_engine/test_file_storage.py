@@ -10,7 +10,10 @@ from models.engine.file_storage import FileStorage
 
 
 class TestFileStorage(unittest.TestCase):
+    """Defines test cases for FileStorage"""
+
     def setUp(self):
+        """Sets up test data"""
         self.storage = FileStorage()
 
     def test_storage(self):
@@ -40,6 +43,7 @@ class TestFileStorage(unittest.TestCase):
         self.storage.new({'name': "jude"})
         self.storage.new(True)
         self.storage.new(False)
+        self.storage.new("")
         new_size = len(self.storage.all())
         self.assertEqual(old_size, new_size)
 
