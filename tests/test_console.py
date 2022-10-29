@@ -344,14 +344,18 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(msg, "** class doesn't exist **")
 
     def test_do_all(self):
-        """It should display all instances using all cmd
+        """It should display only BaseModel instances using
+        cmd all BaseModel
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create User")
-            HBNBCommand().onecmd("all")
+            HBNBCommand().onecmd("create BaseModel")
+            HBNBCommand().onecmd("create Place")
+            HBNBCommand().onecmd("all BaseModel")
             output = f.getvalue().strip()
             self.assertGreater(len(output), 0)
+            match = re.search(r"Place", output)
+            self.assertIsNone(match)
 
     def test_do_all_users(self):
         """It should display only User instances using
@@ -367,7 +371,90 @@ class TestHBNBCommand(unittest.TestCase):
             match = re.search(r"Place", output)
             self.assertIsNone(match)
 
-            HBNBCommand().onecmd("User.all()")
+    def test_do_all_places(self):
+        """It should display only Place instances using
+        cmd all Place
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            HBNBCommand().onecmd("create Place")
+
+            HBNBCommand().onecmd("all Place")
+            output = f.getvalue().strip()
+            self.assertGreater(len(output), 0)
+            match = re.search(r"User", output)
+            self.assertIsNone(match)
+
+    def test_do_all_amenities(self):
+        """It should display only Amenity instances using
+        cmd all Amenity
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            HBNBCommand().onecmd("create Amenity")
+
+            HBNBCommand().onecmd("all Amenity")
+            output = f.getvalue().strip()
+            self.assertGreater(len(output), 0)
+            match = re.search(r"User", output)
+            self.assertIsNone(match)
+
+    def test_do_all_reviews(self):
+        """It should display only Review instances using
+        cmd all Review
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            HBNBCommand().onecmd("create Review")
+
+            HBNBCommand().onecmd("all Review")
+            output = f.getvalue().strip()
+            self.assertGreater(len(output), 0)
+            match = re.search(r"User", output)
+            self.assertIsNone(match)
+
+    def test_do_all_states(self):
+        """It should display only State instances using
+        cmd all State
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            HBNBCommand().onecmd("create State")
+
+            HBNBCommand().onecmd("all State")
+            output = f.getvalue().strip()
+            self.assertGreater(len(output), 0)
+            match = re.search(r"User", output)
+            self.assertIsNone(match)
+
+    def test_do_all_cities(self):
+        """It should display only City instances using
+        cmd all City
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            HBNBCommand().onecmd("create City")
+
+            HBNBCommand().onecmd("all City")
+            output = f.getvalue().strip()
+            self.assertGreater(len(output), 0)
+            match = re.search(r"User", output)
+            self.assertIsNone(match)
+
+    def test_do_all_(self):
+        """It should display only BaseModel instances using
+        cmd all BaseModel
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create BaseModel")
+            HBNBCommand().onecmd("create Place")
+            HBNBCommand().onecmd("BaseModel.all()")
             output = f.getvalue().strip()
             self.assertGreater(len(output), 0)
             match = re.search(r"Place", output)
@@ -381,11 +468,85 @@ class TestHBNBCommand(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
             HBNBCommand().onecmd("create Place")
-
-            HBNBCommand().onecmd("User.all()")
+            HBNBCommand().onecmd("User.all")
             output = f.getvalue().strip()
             self.assertGreater(len(output), 0)
             match = re.search(r"Place", output)
+            self.assertIsNone(match)
+
+    def test_do_all__places(self):
+        """It should display only Place instances using
+        cmd Place.all()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            HBNBCommand().onecmd("create Place")
+
+            HBNBCommand().onecmd("Place.all()")
+            output = f.getvalue().strip()
+            self.assertGreater(len(output), 0)
+            match = re.search(r"User", output)
+            self.assertIsNone(match)
+
+    def test_do_all_amenities(self):
+        """It should display only Amenity instances using
+        cmd Amenity.all()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            HBNBCommand().onecmd("create Amenity")
+
+            HBNBCommand().onecmd("Amenity.all()")
+            output = f.getvalue().strip()
+            self.assertGreater(len(output), 0)
+            match = re.search(r"User", output)
+            self.assertIsNone(match)
+
+    def test_do_all_reviews(self):
+        """It should display only Review instances using
+        cmd Review.all()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            HBNBCommand().onecmd("create Review")
+
+            HBNBCommand().onecmd("Review.all()")
+            output = f.getvalue().strip()
+            self.assertGreater(len(output), 0)
+            match = re.search(r"User", output)
+            self.assertIsNone(match)
+
+    def test_do_all_states(self):
+        """It should display only State instances using
+        cmd State.all()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            HBNBCommand().onecmd("create State")
+
+            HBNBCommand().onecmd("State.all()")
+            output = f.getvalue().strip()
+            self.assertGreater(len(output), 0)
+            match = re.search(r"User", output)
+            self.assertIsNone(match)
+
+    def test_do_all_cities(self):
+        """It should display only City instances using
+        cmd City.all()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            HBNBCommand().onecmd("create City")
+
+            HBNBCommand().onecmd("City.all()")
+            output = f.getvalue().strip()
+            self.assertGreater(len(output), 0)
+            match = re.search(r"User", output)
             self.assertIsNone(match)
 
     def test_do_all_class_not_exists(self):
