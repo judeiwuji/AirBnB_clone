@@ -3,6 +3,7 @@
 Contains basemodel test cases.
 """
 
+from datetime import datetime
 import unittest
 import os
 from models.base_model import BaseModel
@@ -42,7 +43,7 @@ class TestBaseModel(unittest.TestCase):
         b1 = BaseModel()
         old = b1.updated_at
         b1.save()
-        self.assertFalse(old == b1.updated_at)
+        self.assertNotEqual(old, b1.updated_at)
 
     def test_str(self):
         """test the __str__ majic method"""
@@ -50,6 +51,34 @@ class TestBaseModel(unittest.TestCase):
         b = BaseModel()
         b_str = "[BaseModel] ({}) {}".format(b.id, b.__dict__)
         self.assertEqual(b_str, str(b))
+
+
+    def test_id(self):
+        """It should have a string id"""
+        b1 = BaseModel()
+
+        self.assertIsNotNone(b1.id)
+        self.assertIsInstance(b1.id, str)
+
+    def test_created_at(self):
+        """It should have a datetime created_at attribute"""
+        b1 = BaseModel()
+
+        self.assertIsNotNone(b1.created_at)
+        self.assertIsInstance(b1.created_at, datetime)
+
+    def test_updated_at(self):
+        """It should have a datetime updated_at attribute"""
+        b1 = BaseModel()
+
+        self.assertIsNotNone(b1.updated_at)
+        self.assertIsInstance(b1.updated_at, datetime)
+
+    def test_to_dict(self):
+        """It should have a datetime updated_at attribute"""
+        b1 = BaseModel()
+
+        self.assertIsInstance(b1.to_dict(), dict)
 
 
 if __name__ == "__main__":
