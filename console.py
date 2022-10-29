@@ -90,8 +90,10 @@ class HBNBCommand(cmd.Cmd):
         to_update = {}
         if len(raw_dict_list) > 0:
             try:
+                raw_dict_list[0] = raw_dict_list[0].replace("'", '"')
                 to_update = json.loads(raw_dict_list[0])
             except Exception:
+                print("failed")
                 pass
         else:
             key = args[2].replace('"', '')
