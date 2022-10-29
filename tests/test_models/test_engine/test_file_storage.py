@@ -21,7 +21,7 @@ class TestFileStorage(unittest.TestCase):
 
         self.assertIsInstance(self.storage, FileStorage)
 
-    def test_new_obj(self):
+    def test_new(self):
         """It should add new object to storage."""
 
         my_model = BaseModel()
@@ -29,6 +29,7 @@ class TestFileStorage(unittest.TestCase):
         key = "BaseModel.{}".format(my_model.id)
         stored_model = self.storage.all().get(key)
         self.assertEqual(my_model, stored_model)
+        self.assertIsInstance(stored_model, BaseModel)
 
     def test_new_other_objs(self):
         """It should not add object to storage for none BaseModel objects."""

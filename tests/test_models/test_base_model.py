@@ -5,19 +5,13 @@ Contains basemodel test cases.
 
 from datetime import datetime
 import unittest
-import os
 from models.base_model import BaseModel
-from models.engine.file_storage import FileStorage
 
 
 class TestBaseModel(unittest.TestCase):
     """
     test class for basemodel class
     """
-
-    def setUP(self):
-        """Sets up test data"""
-        pass
 
     def test_instance(self):
         """obj should be a BaseModel instance"""
@@ -51,7 +45,6 @@ class TestBaseModel(unittest.TestCase):
         b = BaseModel()
         b_str = "[BaseModel] ({}) {}".format(b.id, b.__dict__)
         self.assertEqual(b_str, str(b))
-
 
     def test_id(self):
         """It should have a string id"""
