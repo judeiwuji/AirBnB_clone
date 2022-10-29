@@ -13,9 +13,6 @@ from models.user import User
 class TestHBNBCommand(unittest.TestCase):
     """defines test cases for HBNBCommand"""
 
-    def setUp(self):
-        """Initializes test data"""
-
     def test_do_count(self):
         """It should return instance count of User
         """
@@ -31,6 +28,33 @@ class TestHBNBCommand(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("User.count()")
             self.assertGreaterEqual(int(f.getvalue()), 0)
+
+    def test_do_count_missing_class(self):
+        """It should fail to count
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count")
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** class name missing **")
+
+    def test_do_count_class_not_exists(self):
+        """It should fail to count
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("count MyModel")
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** class doesn't exist **")
+
+    def test_do_count__class_not_exists(self):
+        """It should fail to count
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("MyModel.count()")
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** class doesn't exist **")
 
     def test_do_create(self):
         """It should create a User using `create User` cmd
@@ -131,7 +155,6 @@ class TestHBNBCommand(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
             HBNBCommand().onecmd("create Place")
-            HBNBCommand().onecmd("all User")
 
             HBNBCommand().onecmd("User.all()")
             output = f.getvalue().strip()
@@ -140,6 +163,16 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertIsNone(match)
 
     def test_do_all_class_not_exists(self):
+        """It should fail to display MyModel
+        instances
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all MyModel")
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** class doesn't exist **")
+
+    def test_do_all__class_not_exists(self):
         """It should fail to display MyModel
         instances
         """
@@ -193,6 +226,15 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
             self.assertEqual(output, "** class doesn't exist **")
 
+    def test_do__show_class_not_exists(self):
+        """It should fail to MyModel.show()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("MyModel.show()")
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** class doesn't exist **")
+
     def test_do_show_missing_id(self):
         """It should fail to show User with missing id
         using show User cmd
@@ -212,6 +254,26 @@ class TestHBNBCommand(unittest.TestCase):
             HBNBCommand().onecmd("User.show()")
             output = f.getvalue().strip()
             self.assertEqual(output, "** instance id missing **")
+
+    def test_do_show_user_invalid_id(self):
+        """It should fail to show User with invalid id
+        using show User "test-1234" cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('show User "test-1234"')
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_show__user_invalid_id(self):
+        """It should fail to show User with invalid id
+        using User.show("test-1234") cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('User.show("test-1234")')
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** no instance found **")
 
     def test_do_update(self):
         """It should update User first_name using
@@ -351,6 +413,26 @@ class TestHBNBCommand(unittest.TestCase):
             HBNBCommand().onecmd("User.update()")
             self.assertEqual(f.getvalue().strip(), "** instance id missing **")
 
+    def test_do_update_user_invalid_id(self):
+        """It should fail to update using cmd
+        update User "test-1234"
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd('update User "test-1234"')
+            self.assertEqual(f.getvalue().strip(), "** no instance found **")
+
+    def test_do_update__user_invalid_id(self):
+        """It should fail to update using cmd
+        User.update("test-1234")
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd('User.update("test-1234")')
+            self.assertEqual(f.getvalue().strip(), "** no instance found **")
+
     def test_do_update_user_missing_attribute(self):
         """It should fail to update using cmd
         User.update(id)
@@ -448,7 +530,7 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
             self.assertEqual(output, "** instance id missing **")
 
-    def test_do_show_user_missing_id(self):
+    def test_do_destroy_user_missing_id(self):
         """It should fail to destroy User with missing id
         using User.destroy() cmd
         """
@@ -457,6 +539,26 @@ class TestHBNBCommand(unittest.TestCase):
             HBNBCommand().onecmd("User.destroy()")
             output = f.getvalue().strip()
             self.assertEqual(output, "** instance id missing **")
+
+    def test_do_destroy_user_invalid_id(self):
+        """It should fail to destroy User with missing id
+        using destroy User "test-1234" cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('destroy User "test-1234"')
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy__user_invalid_id(self):
+        """It should fail to destroy User with missing id
+        using User.destroy("test-1234") cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('User.destroy("test-1234")')
+            output = f.getvalue().strip()
+            self.assertEqual(output, "** no instance found **")
 
 
 if __name__ == "__main__":
