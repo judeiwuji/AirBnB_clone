@@ -9,7 +9,39 @@ A console version of AirBnB clone. Implemented using python programming language
 This provides a Command Line Interface (CLI) for interacting with the AirBnB
 
 ### How to start the interpreter
+```bash
+$ ./console.py
+(hbnb) 
+```
+### How to use itCreate a user
+User.create()
+Print user instance count
+User.count()
+Print all users:
+User.all()
+Print user will specific id:
+User.show("id-here")
+Update user details:
+User.update("id-here", "attribute", "value")
+Update user using dictionary:
+User.update("id-here", {"attribute": "value"})
+Delete a user by id
+User.destroy("id-here")
+```bash
+$ ./console.py
+(hbnb) help
 
-### How to use it
+Documented commands (type help <topic>):
+========================================
+EOF  help  quit
 
+(hbnb) 
+(hbnb) 
+(hbnb) quit
+$
+```
 ### Examples
+```bash
+$ ./console.py
+(hbnb) 
+```
