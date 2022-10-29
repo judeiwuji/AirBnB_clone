@@ -15,9 +15,6 @@ class TestPlace(unittest.TestCase):
     test class for basemodel class
     """
 
-    def setUP(self):
-        pass
-
     def test_instance(self):
         """obj should be a BaseModel and user instance"""
 

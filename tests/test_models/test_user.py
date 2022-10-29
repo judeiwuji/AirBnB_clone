@@ -4,19 +4,14 @@ Contains user test cases.
 """
 
 import unittest
-import os
 from models.base_model import BaseModel
 from models.user import User
-from models.engine.file_storage import FileStorage
 
 
 class TestUser(unittest.TestCase):
     """
     test class for basemodel class
     """
-
-    def setUP(self):
-        pass
 
     def test_instance(self):
         """obj should be a BaseModel and user instance"""

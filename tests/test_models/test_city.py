@@ -15,9 +15,6 @@ class TestCity(unittest.TestCase):
     test class for city class
     """
 
-    def setUP(self):
-        pass
-
     def test_instance(self):
         """obj should be a BaseModel and city instance"""
 

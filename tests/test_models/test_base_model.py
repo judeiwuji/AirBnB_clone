@@ -15,6 +15,7 @@ class TestBaseModel(unittest.TestCase):
     """
 
     def setUP(self):
+        """Sets up test data"""
         pass
 
     def test_instance(self):
