@@ -1195,7 +1195,17 @@ class TestHBNBCommand(unittest.TestCase):
             HBNBCommand().onecmd("update MyModel")
             self.assertEqual(f.getvalue().strip(), "** class doesn't exist **")
 
-    def test_do_update_id_not_exists(self):
+    def test_do_update_id_missing(self):
+        """It should fail to update using cmd
+        update BaseModel
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("update BaseModel")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update_user_id_missing(self):
         """It should fail to update using cmd
         update User
         """
@@ -1203,6 +1213,126 @@ class TestHBNBCommand(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
 
             HBNBCommand().onecmd("update User")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update_place_id_missing(self):
+        """It should fail to update using cmd
+        update Place
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("update Place")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update_state_id_missing(self):
+        """It should fail to update using cmd
+        update State
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("update State")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update_city_id_missing(self):
+        """It should fail to update using cmd
+        update City
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("update City")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update_amenity_id_missing(self):
+        """It should fail to update using cmd
+        update Amenity
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("update Amenity")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update_review_id_missing(self):
+        """It should fail to update using cmd
+        update Review
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("update Review")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update__id_missing(self):
+        """It should fail to update using cmd
+        BaseModel.update()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("BaseModel.update()")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update__user_id_missing(self):
+        """It should fail to update using cmd
+        User.update()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("User.update()")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update__place_id_missing(self):
+        """It should fail to update using cmd
+        Place.update()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("Place.update()")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update__state_id_missing(self):
+        """It should fail to update using cmd
+        State.update()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("State.update()")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update__city_id_missing(self):
+        """It should fail to update using cmd
+        City.update()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("City.update()")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update__amenity_id_missing(self):
+        """It should fail to update using cmd
+        Amenity.update()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("Amenity.update()")
+            self.assertEqual(f.getvalue().strip(), "** instance id missing **")
+
+    def test_do_update__review_id_missing(self):
+        """It should fail to update using cmd
+        Review.update()
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+
+            HBNBCommand().onecmd("Review.update()")
             self.assertEqual(f.getvalue().strip(), "** instance id missing **")
 
     def test_do_update_no_attribute(self):
@@ -1331,28 +1461,198 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(before_update, after_update)
 
     def test_do_destroy(self):
-        """It should delete a user using the cmd
-        destroy User id
+        """It should delete an instance using the cmd
+        destroy BaseModel id
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create User")
+            model = "BaseModel"
+            HBNBCommand().onecmd("create {}".format(model))
             obj_id = f.getvalue().strip()
-            HBNBCommand().onecmd("destroy User {}".format(obj_id))
-            HBNBCommand().onecmd("show User {}".format(obj_id))
+            HBNBCommand().onecmd("destroy BaseModel {}".format(obj_id))
+            HBNBCommand().onecmd("show {} {}".format(model, obj_id))
             output = f.getvalue().strip().split("\n")[-1]
             self.assertEqual(output, "** no instance found **")
 
     def test_do_destroy_user(self):
-        """It should delete a user using the cmd
+        """It should delete an instance using the cmd
+        destroy User id
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "User"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("destroy User {}".format(obj_id))
+            HBNBCommand().onecmd("show {} {}".format(model, obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy_place(self):
+        """It should delete an instance using the cmd
+        destroy Place id
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Place"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("destroy Place {}".format(obj_id))
+            HBNBCommand().onecmd("show {} {}".format(model, obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy_state(self):
+        """It should delete an instance using the cmd
+        destroy State id
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "State"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("destroy State {}".format(obj_id))
+            HBNBCommand().onecmd("show {} {}".format(model, obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy_city(self):
+        """It should delete an instance using the cmd
+        destroy City id
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "City"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("destroy City {}".format(obj_id))
+            HBNBCommand().onecmd("show {} {}".format(model, obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy_amenity(self):
+        """It should delete an instance using the cmd
+        destroy Amenity id
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Amenity"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("destroy Amenity {}".format(obj_id))
+            HBNBCommand().onecmd("show {} {}".format(model, obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy_review(self):
+        """It should delete an instance using the cmd
+        destroy Review id
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Review"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("destroy Review {}".format(obj_id))
+            HBNBCommand().onecmd("show {} {}".format(model, obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy_base_model(self):
+        """It should delete an instance using the cmd
+        BaseModel.destroy(id)
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "BaseModel"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("BaseModel.destroy({})".format(obj_id))
+            HBNBCommand().onecmd("{}.show({})".format(model, obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy__user(self):
+        """It should delete an instance using the cmd
         User.destroy(id)
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create User")
+            model = "User"
+            HBNBCommand().onecmd("create {}".format(model))
             obj_id = f.getvalue().strip()
             HBNBCommand().onecmd("User.destroy({})".format(obj_id))
-            HBNBCommand().onecmd("User.show({})".format(obj_id))
+            HBNBCommand().onecmd("{}.show({})".format(model, obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy__place(self):
+        """It should delete an instance using the cmd
+        Place.destroy(id)
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Place"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("Place.destroy({})".format(obj_id))
+            HBNBCommand().onecmd("{}.show({})".format(model, obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy__state(self):
+        """It should delete an instance using the cmd
+        State.destroy(id)
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "State"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("State.destroy({})".format(obj_id))
+            HBNBCommand().onecmd("{}.show({})".format(model, obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy__city(self):
+        """It should delete an instance using the cmd
+        City.destroy(id)
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "City"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("City.destroy({})".format(obj_id))
+            HBNBCommand().onecmd("{}.show({})".format(model, obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy__amenity(self):
+        """It should delete an instance using the cmd
+        Amenity.destroy(id)
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Amenity"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("Amenity.destroy({})".format(obj_id))
+            HBNBCommand().onecmd("{}.show({})".format(model, obj_id))
+            output = f.getvalue().strip().split("\n")[-1]
+            self.assertEqual(output, "** no instance found **")
+
+    def test_do_destroy__review(self):
+        """It should delete an instance using the cmd
+        Review.destroy(id)
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Review"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            HBNBCommand().onecmd("Review.destroy({})".format(obj_id))
+            HBNBCommand().onecmd("{}.show({})".format(model, obj_id))
             output = f.getvalue().strip().split("\n")[-1]
             self.assertEqual(output, "** no instance found **")
 
