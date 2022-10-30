@@ -1,4 +1,4 @@
-#!/usr/bin.python3
+#!/usr/bin/python3
 """Contains all test cases of HBNBCommand console"""
 
 import re
