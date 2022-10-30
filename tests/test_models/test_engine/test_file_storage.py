@@ -126,20 +126,28 @@ class TestFileStorage(unittest.TestCase):
     def test_save(self):
         """It should save __objects to file.json"""
 
-        BaseModel()
-        User()
-        Place()
-        State()
-        City()
-        Amenity()
-        Review()
-        storage.save()
+        my_model = BaseModel()
+        my_model.name = "Test"
+        my_model.magic = 101
+        my_model.save()
         self.assertTrue(os.path.exists("file.json"))
         storage.reload()
-        objects = storage.all()
-        for key in objects:
-            obj = objects[key]
-            self.assertTrue(issubclass(type(obj), BaseModel))
+        key = "BaseModel.{}".format(my_model.id)
+        storedModel = storage.all().get(key, None)
+        self.assertIsNotNone(storedModel)
+
+    def test_save_user(self):
+        """It should save user __objects to file.json"""
+
+        model = User()
+        model.first_name = "Betty"
+        model.last_name = "Butter"
+        model.save()
+        self.assertTrue(os.path.exists("file.json"))
+        storage.reload()
+        key = "User.{}".format(model.id)
+        storedModel = storage.all().get(key, None)
+        self.assertIsNotNone(storedModel)
 
     def test_reload(self):
         """It should reload objects from file.json into __objects"""
@@ -147,6 +155,9 @@ class TestFileStorage(unittest.TestCase):
         storage.reload()
         objects = storage.all()
         self.assertIsInstance(objects, dict)
+        for key in objects:
+            obj = objects[key]
+            self.assertTrue(issubclass(type(obj), BaseModel))
 
 
 if __name__ == "__main__":
