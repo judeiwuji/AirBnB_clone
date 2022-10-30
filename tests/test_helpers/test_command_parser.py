@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Contains test cases for CommandParser."""
+"""Contains test cases for CommandParser"""
 
 import unittest
 from helpers.command_parser import CommandParser
