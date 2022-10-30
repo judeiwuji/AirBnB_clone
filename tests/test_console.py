@@ -833,47 +833,344 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(output, "** no instance found **")
 
     def test_do_update(self):
-        """It should update User first_name using
-        update User id "first_name" "Betty" cmd
+        """It should update BaseModel using
+        update BaseModel id "attribute" "value" cmd
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create User")
+            model = "BaseModel"
+            HBNBCommand().onecmd("create {}".format(model))
             obj_id = f.getvalue().strip()
-            key = "User.{}".format(obj_id)
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'update BaseModel {} "first_name" "Betty"'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_user(self):
+        """It should update User using
+        update User id "attribute" "value" cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "User"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
             before_update = str(storage.all().get(key))
             cmd = 'update User {} "first_name" "Betty"'
             HBNBCommand().onecmd(cmd.format(obj_id))
             after_update = str(storage.all().get(key))
             self.assertNotEqual(before_update, after_update)
 
-    def test_do_update_user(self):
-        """It should update User first_name using
-        User.update("id", "first_name", "Betty") cmd
+    def test_do_update_place(self):
+        """It should update Place using
+        update Place id "attribute" "value" cmd
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create User")
+            model = "Place"
+            HBNBCommand().onecmd("create {}".format(model))
             obj_id = f.getvalue().strip()
-            key = "User.{}".format(obj_id)
+            key = "{}.{}".format(model, obj_id)
             before_update = str(storage.all().get(key))
-            cmd = 'User.update({}, "first_name", "Betty")'
+            cmd = 'update Place {} "name" "Nigeria"'
             HBNBCommand().onecmd(cmd.format(obj_id))
             after_update = str(storage.all().get(key))
             self.assertNotEqual(before_update, after_update)
 
+    def test_do_update_city(self):
+        """It should update City using
+        update City id "attribute" "value" cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "City"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'update City {} "name" "Banana Island"'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_state(self):
+        """It should update State using
+        update State id "attribute" "value" cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "State"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'update State {} "name" "Lagos"'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_review(self):
+        """It should update Review using
+        update Review id "attribute" "value" cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Review"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'update Review {} "text" "nice"'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_amenity(self):
+        """It should update Amenity using
+        update Amenity id "attribute" "value" cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Amenity"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'update Amenity {} "name" "swimming pool"'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update(self):
+        """It should update BaseModel using
+        BaseModel.update(id, "attribute", "value") cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "BaseModel"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'BaseModel.update("{}", "first_name", "Betty")'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_user(self):
+        """It should update User using
+        User.update(id, "attribute", "value") cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "User"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'User.update("{}", "first_name", "Betty")'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_place(self):
+        """It should update Place using
+        Place.update(id, "attribute", "value")
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Place"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'Place.update("{}", "name", "Nigeria")'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_city(self):
+        """It should update City using
+        City.update(id, "attribute", "value")
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "City"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'City.update("{}", "name", "Banana Island")'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update__state(self):
+        """It should update State using
+        State.update(id, "attribute", "value")
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "State"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'State.update("{}", "name", "Lagos")'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_review(self):
+        """It should update Review using
+        Review.update(id, "attribute", "value")
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Review"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'Review.update("{}", "text", "nice")'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update__amenity(self):
+        """It should update Amenity using
+        Amenity.update(id, "attribute", "value")
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Amenity"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            cmd = 'Amenity.update("{}", "name", "swimming pool",)'
+            HBNBCommand().onecmd(cmd.format(obj_id))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_base_model_dict(self):
+        """It should update with dict using
+        BaseModel.update("id", {"first_name": "Betty"}) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "BaseModel"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            data = '{"first_name": "Betty"}'
+            cmd = 'BaseModel.update("{}", {})'
+            HBNBCommand().onecmd(cmd.format(obj_id, data))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
     def test_do_update_user_dict(self):
-        """It should update User first_name using
+        """It should update with dict using
         User.update("id", {"first_name": "Betty"}) cmd
         """
 
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create User")
+            model = "User"
+            HBNBCommand().onecmd("create {}".format(model))
             obj_id = f.getvalue().strip()
-            key = "User.{}".format(obj_id)
+            key = "{}.{}".format(model, obj_id)
             before_update = str(storage.all().get(key))
             data = '{"first_name": "Betty"}'
             cmd = 'User.update("{}", {})'
+            HBNBCommand().onecmd(cmd.format(obj_id, data))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_plcase_dict(self):
+        """It should update with dict using
+        Place.update("id", {"name": "Nigeria"}) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Place"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            data = '{"name": "Nigeria"}'
+            cmd = 'Place.update("{}", {})'
+            HBNBCommand().onecmd(cmd.format(obj_id, data))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_state_dict(self):
+        """It should update with dict using
+        State.update("id", {"name": "Lagos"}) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "State"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            data = '{"name": "Lagos"}'
+            cmd = 'State.update("{}", {})'
+            HBNBCommand().onecmd(cmd.format(obj_id, data))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_user_dict(self):
+        """It should update with dict using
+        City.update("id", {"name": "Surulere"}) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "City"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            data = '{"name": "Surulere"}'
+            cmd = 'City.update("{}", {})'
+            HBNBCommand().onecmd(cmd.format(obj_id, data))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_review_dict(self):
+        """It should update with dict using
+        Review.update("id", {"text": "nice place"}) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Review"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            data = '{"text": "nice place"}'
+            cmd = 'Review.update("{}", {})'
+            HBNBCommand().onecmd(cmd.format(obj_id, data))
+            after_update = str(storage.all().get(key))
+            self.assertNotEqual(before_update, after_update)
+
+    def test_do_update_amenity_dict(self):
+        """It should update with dict using
+        Amenity.update("id", {"name": "spa"}) cmd
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            model = "Amenity"
+            HBNBCommand().onecmd("create {}".format(model))
+            obj_id = f.getvalue().strip()
+            key = "{}.{}".format(model, obj_id)
+            before_update = str(storage.all().get(key))
+            data = '{"name": "spa"}'
+            cmd = 'Amenity.update("{}", {})'
             HBNBCommand().onecmd(cmd.format(obj_id, data))
             after_update = str(storage.all().get(key))
             self.assertNotEqual(before_update, after_update)
