@@ -126,15 +126,20 @@ class TestFileStorage(unittest.TestCase):
     def test_save(self):
         """It should save __objects to file.json"""
 
-        my_model = BaseModel()
-        my_model.name = "Test"
-        my_model.magic = 101
-        my_model.save()
+        BaseModel()
+        User()
+        Place()
+        State()
+        City()
+        Amenity()
+        Review()
+        storage.save()
         self.assertTrue(os.path.exists("file.json"))
         storage.reload()
-        key = "BaseModel.{}".format(my_model.id)
-        storedModel = storage.all().get(key, None)
-        self.assertIsNotNone(storedModel)
+        objects = storage.all()
+        for key in objects:
+            obj = objects[key]
+            self.assertTrue(issubclass(type(obj), BaseModel))
 
     def test_reload(self):
         """It should reload objects from file.json into __objects"""
