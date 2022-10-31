@@ -159,6 +159,11 @@ class TestFileStorage(unittest.TestCase):
             obj = objects[key]
             self.assertTrue(issubclass(type(obj), BaseModel))
 
+    def test_reload_error(self):
+        """tests reload with arg"""
+        with self.assertRaises(ValueError) as context:
+            storage.reload("me")
+
 
 if __name__ == "__main__":
     unittest.main(TestFileStorage)
