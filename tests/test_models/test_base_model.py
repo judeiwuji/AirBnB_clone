@@ -41,8 +41,9 @@ class TestBaseModel(unittest.TestCase):
 
     def test_save_error(self):
         """test save method with two positional arg"""
-        b1 = BaseModel()
-        self.assertRaises(ValueError, b1.save(self))
+        b3 = BaseModel()
+        with self.assertRaises(Exception) as context:
+            b3.save("me")
 
     def test_str(self):
         """test the __str__ majic method"""
