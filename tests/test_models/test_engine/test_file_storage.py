@@ -159,11 +159,6 @@ class TestFileStorage(unittest.TestCase):
             obj = objects[key]
             self.assertTrue(issubclass(type(obj), BaseModel))
 
-    def test_reload_error(self):
-        """test reload with more than one postional arg"""
-        with self.assertRaises(TypeError) as context:
-            storage.reload("srting")
-
 
 if __name__ == "__main__":
     unittest.main(TestFileStorage)
