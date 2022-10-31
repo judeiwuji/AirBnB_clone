@@ -39,6 +39,11 @@ class TestBaseModel(unittest.TestCase):
         b1.save()
         self.assertNotEqual(old, b1.updated_at)
 
+    def test_save_error(self):
+        """test save method with two positional arg"""
+        b1 = BaseModel()
+        self.assertRaises(ValueError, b1.save(self))
+
     def test_str(self):
         """test the __str__ majic method"""
 
