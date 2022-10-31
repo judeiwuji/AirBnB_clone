@@ -42,7 +42,7 @@ class TestBaseModel(unittest.TestCase):
     def test_save_error(self):
         """test save method with two positional arg"""
         b3 = BaseModel()
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(ValueError) as context:
             b3.save("me")
 
     def test_str(self):
