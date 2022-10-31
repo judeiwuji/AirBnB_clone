@@ -19,6 +19,14 @@ from models.user import User
 class TestHBNBCommand(unittest.TestCase):
     """defines test cases for HBNBCommand"""
 
+    def test_do_emptyline(self):
+        """It should return nothing
+        """
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("quit")
+            self.assertIsNotNone(f.getvalue())
+    
     def test_do_count(self):
         """It should return instance count of BaseModel
         """
